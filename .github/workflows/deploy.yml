@@ -28,12 +28,17 @@ jobs:
     - name: Add Header
       run: cp ${{ github.workspace }}/dist/worker.js ${{ github.workspace }}/dist/worker-original.js && echo -e "/*!\n  * v2ray Subscription Worker (${{ github.sha }})\n  * Copyright 2024 Vahid Farid (https://twitter.com/vahidfarid)\n  * Licensed under GPLv3 (https://github.com/vfarid/v2ray-worker/blob/main/Licence.md)\n  */\n\n$(cat ${{ github.workspace }}/dist/worker.js)" > ${{ github.workspace }}/dist/worker.js
 
+    - name: Debug Secret (safe for debug, do not use in production)
+      run: echo "$KV_NAME"
+      env:
+        KV_NAME: ${{ secrets.KV_NAME }}
+
     - name: Deploy
       uses: cloudflare/wrangler-action@v3
       env:
         KV_NAME: ${{ secrets.KV_NAME }}
       with:
-        preCommands: sed -i "s|KV_NAME|$KV_NAME|g" wrangler.toml
+        preCommands: sed -i "s/KV_NAME/$KV_NAME/g"  wrangler.toml
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CF_ACCOUNT_ID }}
 
