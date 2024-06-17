@@ -31,7 +31,7 @@ jobs:
     - name: Deploy
       uses: cloudflare/wrangler-action@v3
       with:
-        preCommands: sed -i "s/KV_NAME/${{ secrets.KV_NAME }}/g" wrangler.toml
+        # preCommands: sed -i s/KV_NAME/${{ secrets.KV_NAME }}/g wrangler.toml
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CF_ACCOUNT_ID }}
 
